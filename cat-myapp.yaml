@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cat-website-myapp
+  namespace: cat-website-myapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cat-website-myapp
+  template:
+    metadata:
+      labels:
+        app: cat-website-myapp
+    spec:
+      containers:
+      - name: cat-website-app-intel
+        image: climacs/cat-website-app-intel
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cat-website-myapp-service
+  namespace: cat-website-myapp
+spec:
+  selector:
+    app: cat-website-myapp
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: LoadBalancer
